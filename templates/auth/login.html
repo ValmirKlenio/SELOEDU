@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SELOEDU - Login</title>
-  <link rel="stylesheet" href="/static/custom.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <h1>Login</h1>
-      <form method="POST" action="/login">
+      <form method="POST" action="{{ url_for('auth.login') }}">
         <div class="form-group">
           <label for="email">E-mail</label>
           <input type="text" id="email" name="email" required>
         </div>
         <div class="form-group">
-          <label for="senha">Senha</label>
-          <input type="password" id="senha" name="senha" required>
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" required>
         </div>
         <button type="submit" class="btn">Entrar</button>
       </form>

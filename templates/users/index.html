@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários - SELOEDU{% endblock %}
+
+{% block content %}
+  <h2>Usuários</h2>
+
+  <p><a href="{{ url_for('users.create') }}">+ Novo usuário</a></p>
+
+  {% if usuarios %}
+    <table border="1" cellpadding="6">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Papel</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in usuarios %}
+          <tr>
+            <td>{{ u.id }}</td>
+            <td><a href="{{ url_for('users.show', user_id=u.id) }}">{{ u.nome }}</a></td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.role }}</td>
+            <td>
+              <a href="{{ url_for('users.edit', user_id=u.id) }}">Editar</a>
+              |
+              <form action="{{ url_for('users.delete', user_id=u.id) }}" method="post" style="display:inline">
+                <button type="submit">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Nenhum usuário cadastrado.</p>
+  {% endif %}
+{% endblock %}

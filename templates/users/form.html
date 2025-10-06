@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Editar usuário' if user else 'Novo usuário' }} - SELOEDU{% endblock %}
+
+{% block content %}
+  <h2>{{ 'Editar usuário' if user else 'Novo usuário' }}</h2>
+
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input type="text" name="nome"
+             value="{{ user.nome if user else (form_data.nome if form_data else '') }}"
+             class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" name="email"
+             value="{{ user.email if user else (form_data.email if form_data else '') }}"
+             class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Papel</label>
+      {% set r = user.role if user else (form_data.role if form_data else 'aluno') %}
+      <select name="role" class="form-control">
+        <option value="aluno" {{ 'selected' if r == 'aluno' else '' }}>Aluno</option>
+        {# Coordenador NÃO enxerga a opção coordenador #}
+        {% if current_user.is_authenticated and current_user.role != 'coordenador' %}
+          <option value="coordenador" {{ 'selected' if r == 'coordenador' else '' }}>Coordenador</option>
+        {% endif %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Senha</label>
+      <input type="password" name="password" class="form-control"{% if not user %}required{% endif %} minlength="6">
+      {% if user %}
+        <small class="form-text text-muted">Deixe em branco para manter a senha atual.</small>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{{ url_for('users.index') }}" class="btn btn-secondary">Voltar</a>
+  </form>
+{% endblock %}

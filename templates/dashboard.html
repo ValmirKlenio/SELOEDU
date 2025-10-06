@@ -1,16 +1,8 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="pt-br">
+{% block title %}Dashboard{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <p>Você está logado! {{name}}</p>
-    <a href="">Sair</a>
-</body>
-
-</html>
+{% block content %}
+    <h1>Bem-vindo, {{ current_user.nome }}!</h1>
+    <p>Este é o seu painel de controle.</p>
+{% endblock %}

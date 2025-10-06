@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Usuário #{{ user.id }} - SELOEDU{% endblock %}
+
+{% block content %}
+  <h2>Detalhes do Usuário</h2>
+  <p><strong>ID:</strong> {{ user.id }}</p>
+  <p><strong>Nome:</strong> {{ user.nome }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Papel:</strong> {{ user.role }}</p>
+
+  <p>
+    <a href="{{ url_for('users.edit', user_id=user.id) }}">Editar</a> |
+    <a href="{{ url_for('users.index') }}">Voltar</a>
+  </p>
+{% endblock %}

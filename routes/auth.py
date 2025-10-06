@@ -15,8 +15,10 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             login_user(user)
-            flash("Login realizado com sucesso!", "sucess")
-            return redirect(url_for("dashboard"))
+            # CORRIGIDO: Categoria 'success' e redirecionamento para 'next'
+            flash("Login realizado com sucesso!", "success")
+            next_page = request.args.get("next")
+            return redirect(next_page or url_for("dashboard"))
         else:
             flash("Credenciais inválidas.", "danger")
     
