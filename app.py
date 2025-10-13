@@ -1,17 +1,14 @@
 from flask import Flask, render_template
 from extensions import db, login_manager
-from models.user import User
-from views.auth import auth_bp
-from views.users import users_bp
-
+from models import User, Profile 
+from routes.auth import auth_bp
+from routes.users import users_bp
 
 app = Flask(__name__)
 app.config.from_object("config.Config")
 
 db.init_app(app)
 login_manager.init_app(app)
-
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,11 +25,11 @@ def dashboard():
 with app.app_context():
     db.create_all()
     if not User.query.filter_by(email="admin@seloedu.com").first():
-        user = User(nome="Admin", email="admin@seloedu.com", role="master")
-        user.set_password("123456")
+        user = User(nome="Admin", email = "admin@seloedu.com", role="master")
+        user.set_password('123456')
         db.session.add(user)
         db.session.commit()
-        print("Usuário admin criado com sucesso!")
+        print("Usuario admin criado com sucesso!")
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(users_bp)

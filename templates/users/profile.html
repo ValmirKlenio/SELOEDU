@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Meu Perfil - SELOEDU{% endblock %}
+
+{% block content %}
+<h1>Meu Perfil | {{ current_user.nome if current_user and current_user.nome else '' }}</h1>
+
+<form method="post" action="{{ url_for('users.profile') }}" enctype="multipart/form-data">
+  {% if form %}
+    {{ form.hidden_tag() }}
+  {% endif %}
+
+  <div style="display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap;">
+    <!-- COLUNA ESQUERDA: FOTO GRANDE + BOTÃO -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; min-width:220px;">
+      <div id="photo-box"
+           style="width:200px; height:200px; border-radius:50%; overflow:hidden; background:#ddd; display:flex; align-items:center; justify-content:center; cursor:pointer;"
+           title="Clique para alterar a foto">
+        {% if profile and profile.foto_thumb %}
+          <img id="current-photo" src="{{ url_for('static', filename='uploads/' ~ profile.foto_thumb) }}"
+               alt="Foto atual" style="width:200px; height:200px; object-fit:cover; display:block;">
+        {% elif profile and profile.foto %}
+          <img id="current-photo" src="{{ url_for('static', filename='uploads/' ~ profile.foto) }}"
+               alt="Foto atual" style="width:200px; height:200px; object-fit:cover; display:block;">
+        {% else %}
+          {% set _name = current_user.nome if current_user and current_user.nome else '' %}
+          {% set parts = _name.split() if _name else [] %}
+          {% if parts|length > 1 %}
+            {% set initials = (parts[0][0] ~ parts[-1][0]).upper() %}
+          {% elif _name %}
+            {% set initials = _name[:2].upper() %}
+          {% else %}
+            {% set initials = "?" %}
+          {% endif %}
+          <span id="initials" style="font-weight:700; font-size:48px; color:#fff;">
+            {{ initials }}
+          </span>
+        {% endif %}
+      </div>
+
+      <!-- botão abaixo da foto (abre o file chooser) -->
+      <div>
+        <label for="foto" style="display:inline-block; padding:8px 12px; background:#eee; border:1px solid #ccc; border-radius:6px; cursor:pointer;">
+          Escolher foto
+        </label>
+        <input type="file" id="foto" name="foto" accept="image/*" style="display:none;">
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: CAMPOS -->
+    <div style="flex:1 1 420px; min-width:260px;">
+      <div style="margin-bottom:10px;">
+        <label for="cargo">Cargo:</label><br>
+        <input type="text" id="cargo" name="cargo" value="{{ profile.cargo or '' }}" style="width:40%; box-sizing:border-box;">
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <label for="instituicao">Instituição:</label><br>
+        <input type="text" id="instituicao" name="instituicao" value="{{ profile.instituicao or '' }}" style="width:40%; box-sizing:border-box;">
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <label for="telefone">Telefone:</label><br>
+        {% if form %}
+          {{ form.telefone(class="form-control", style="width:40%; box-sizing:border-box;") }}
+        {% else %}
+          <input type="text" id="telefone" name="telefone" maxlength="11" value="{{ profile.telefone or '' }}" style="width:40%; box-sizing:border-box;">
+        {% endif %}
+      </div>
+
+      <div style="margin-top:6px;">
+        <label for="bio">Bio:</label><br>
+        {% if form %}
+          {{ form.bio(class="form-control", rows=5, style="width:70%; box-sizing:border-box;") }}
+        {% else %}
+          <textarea id="bio" name="bio" rows="8" style="width:70%; box-sizing:border-box;">{{ profile.bio or '' }}</textarea>
+        {% endif %}
+      </div>
+
+      <div style="margin-top:14px;">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  // elementos
+  const fotoInput = document.getElementById('foto');
+  const photoBox = document.getElementById('photo-box');
+  const initialsSpan = document.getElementById('initials');
+
+  // clique no photo-box também abre o file chooser
+  photoBox && photoBox.addEventListener('click', function(e) {
+    const input = document.getElementById('foto');
+    if (input) input.click();
+  });
+
+  // preview do arquivo escolhido (substitui iniciais/imagem)
+  fotoInput && fotoInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+
+    if (!file) {
+      if (initialsSpan) initialsSpan.style.display = '';
+      const existingImg = document.getElementById('current-photo');
+      if (existingImg) existingImg.style.display = '';
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor selecione um arquivo de imagem.');
+      fotoInput.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      if (initialsSpan) initialsSpan.style.display = 'none';
+
+      let img = document.getElementById('current-photo');
+      if (!img) {
+        img = document.createElement('img');
+        img.id = 'current-photo';
+        img.alt = 'Preview';
+        img.style.width = '200px';
+        img.style.height = '200px';
+        img.style.objectFit = 'cover';
+        photoBox.innerHTML = '';
+        photoBox.appendChild(img);
+      }
+      img.src = e.target.result;
+      img.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+{% endblock %}

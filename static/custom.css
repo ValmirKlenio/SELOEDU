@@ -1,58 +1,79 @@
-/* Reset básico */
-* { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
-
-/* Fundo e centralização */
-body {
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#c2c2c2;
+/* Layout principal: sidebar à esquerda e conteúdo à direita */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
 }
 
-/* Container central */
-.wrap { width:100%; max-width:500px; padding:20px; }
-
-/* Card branco */
-.card {
-  background:#fff;
-  padding:24px;
-  border-radius:8px;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
-  border:1px solid #eee;
-  text-align:center;
+/* Sidebar fixa */
+aside {
+  background-color: #f3f4f6;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  border-right: 1px solid #ddd;
 }
 
-/* Títulos */
-.card h1 {
-  font-size:26px;
-  font-weight:700;
-  margin-bottom:12px;
+/* Logo / título */
+aside h2 {
+  margin-bottom: 5px;
+  text-align: left;
+  color: #4f00ff;
 }
-/* Texto */
-.card p { color:#555; margin-bottom:16px; }
 
-/* Botão vermelho */
-.btn {
-  display:inline-block;
-  width:100%;
-  padding:10px;
-  background:#7e0202;
-  color:#fff;
-  text-decoration:none;
-  border:none;
-  border-radius:6px;
-  font-weight:700;
-  cursor:pointer;
+/* Navegação principal */
+aside nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-.btn:hover { background:#370101; }
 
-/* Formulário */
-.form-group { margin-bottom:14px; text-align:left; }
-label { display:block; margin-bottom:6px; font-weight:600; color:#333; }
-input[type="text"], input[type="password"] {
-  width:100%;
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:6px;
+aside nav li {
+  margin: 10px 0;
+}
+
+aside nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+aside nav a:hover {
+  color: #4f00ff;
+}
+
+/* Bloco inferior (perfil) */
+.sidebar-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  font-size: 14px;
+  margin-top: auto;
+}
+
+.sidebar-footer p {
+  margin: 2px 0;
+}
+
+.sidebar-footer ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.sidebar-footer li {
+  margin: 6px 0;
+}
+
+.sidebar-footer a {
+  text-decoration: none;
+  color: #4f00ff;
+}
+
+.sidebar-footer a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 20px;
 }
