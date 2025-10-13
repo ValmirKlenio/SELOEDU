@@ -14,3 +14,6 @@ Instale a dependência Flask:
 ### 3. PARA EVENTUAIS PROBLEMAS (PowerShell)
 Se houver problemas de permissão na execução, defina a política de execução:
 `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+### 4. Instalar Requirements (PowerShell)
+`pip install -r .\requirements.txt`
