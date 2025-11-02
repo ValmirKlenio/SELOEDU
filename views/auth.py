@@ -29,3 +29,11 @@ def logout():
     logout_user()
     flash("Sessão encerrada.", "info")
     return redirect(url_for("auth.login"))
+
+def forgot_password():
+
+    return render_template("auth/forgo_password.html")
+
+def reset_password():
+
+    return render_template("auth/reset_password.html")
