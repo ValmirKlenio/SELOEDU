@@ -18,4 +18,4 @@ class Config:
     MAIL_USE_TLS = False
     MAIL_USERNAME = ""
     MAIL_PASSWORD = ""
-    MAIL_DEFAULT_SENDER = "genivaldo@gmail.com"
+    MAIL_DEFAULT_SENDER = "valmir@seloedu.com"
