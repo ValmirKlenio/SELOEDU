@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Treinamentos</h1>
+
+    {% if current_user.role == 'coordenador' %}
+        <a href="{{ url_for('treinamento.novo') }}">Novo Treinamento</a>
+    {% endif %}
+
+    <ul>
+        {% for treinamento in treinamentos %}
+            <li>
+                <strong>{{ treinamento.nome }}</strong>
+                <p>{{ treinamento.descricao }}</p>
+                <small>Início: {{ treinamento.data_inicio.strftime('%d/%m/%Y %H:%M') }}</small>
+                {% if treinamento.data_fim %}
+                    <small>Fim: {{ treinamento.data_fim.strftime('%d/%m/%Y %H:%M') }}</small>
+                {% endif %}
+                <small>Coordenador: {{ treinamento.coordenador.nome }}</small>
+            </li>
+        {% else %}
+            <li>Nenhum treinamento encontrado.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
